@@ -9,7 +9,8 @@
   "exports": {
     "require": "./dist/index.cjs.js",
     "import": "./dist/index.esm.js",
-    "default": "./dist/index.umd.js"
+    "browser": "./dist/index.umd.js",
+    "script": "./dist/index.umd.js"
   },
   "files": [
     "dist"
@@ -18,15 +19,22 @@
     "build": "rollup -c",
     "dev": "npx serve src"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/calycode/docsify-page-actions-menu.git"
+  },
+  "bugs": {
+    "url": "https://github.com/calycode/docsify-page-actions-menu/issues"
+  },
+  "homepage": "https://github.com/calycode/docsify-page-actions-menu#readme",
   "keywords": [
     "docsify",
     "plugin",
     "markdown",
     "copy",
-    "llm",
     "menu"
   ],
-  "author": "Mihály Tóth @calycode",
+  "author": "Mihály Tóth <hello@calycode.com> (https://github.com/calycode)",
   "license": "MIT",
   "peerDependencies": {
     "docsify": ">=4"
