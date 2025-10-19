@@ -44,9 +44,6 @@ The plugin is designed to work with [Docsify Theme variables](https://preview.do
 }
 ```
 
-> **Note:**
-> Styling is in progress. The plugin will use its own CSS variables derived from Docsify theme values (with sensible defaults).
-
 ## Configuration
 
 Override or extend the default menu by adding a `pageActionItems` array in your Docsify config:
@@ -128,8 +125,6 @@ For context here's the default items that are included by default:
    ```
 
 ---
-
-_This workflow lets you preview, develop, and bundle the plugin easily._
 
 ## License
 
