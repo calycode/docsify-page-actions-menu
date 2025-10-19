@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8" />
+      <meta
+         name="viewport"
+         content="width=device-width, initial-scale=1, viewport-fit=cover"
+      />
+
+      <!-- Core Theme -->
+      <link
+         rel="stylesheet"
+         href="//cdn.jsdelivr.net/npm/docsify@^5.0.0-rc/dist/themes/core.min.css"
+      />
+      <!-- Core Dark - Dark Mode Only (add-on) -->
+      <!-- <link
+         href="//cdn.jsdelivr.net/npm/docsify@^5.0.0-rc/dist/themes/addons/core-dark.min.css"
+         rel="stylesheet"
+      /> -->
+   </head>
+   <body class="loading">
+      <div id="app"></div>
+
+      <!-- Configuration -->
+      <script>
+         window.$docsify = {
+            hideSidebar: true,
+            /*             copyPageMenuItems: [
+               {
+                  icon: '🔗',
+                  label: 'Custom Link',
+                  desc: 'Go somewhere',
+                  action: 'custom',
+                  onClick: () => {
+                     console.log('hello world');
+                  },
+               },
+            ], */
+         };
+      </script>
+
+      <!-- Docsify.js -->
+      <script src="//cdn.jsdelivr.net/npm/docsify@^5.0.0-rc"></script>
+
+      <!-- Page actions menu plugin src -->
+      <script src="index.js"></script>
+   </body>
+</html>
