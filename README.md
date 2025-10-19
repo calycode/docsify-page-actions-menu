@@ -17,7 +17,7 @@ Add the script from CDN (WIP) or include it from our `dist` directory here in yo
 
 ```html
 <!-- Page actions plugin -->
-<script src="../dist/index.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/docsify-page-actions-menu"></script>
 ```
 
 ## Styling
