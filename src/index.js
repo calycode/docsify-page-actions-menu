@@ -230,6 +230,8 @@ function pageActionItems(hook, vm) {
         font-size: var(--dapm-font-size-label);
         flex-shrink: 0;
         display: flex;
+        align-items: center;
+        justify-content: center;
         border-color: var(--dapm-border-color);
         border-radius: var(--dapm-border-radius);
         background-color: var(--dapm-icon-bg);

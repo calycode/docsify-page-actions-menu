@@ -1,5 +1,11 @@
 # docsify-page-actions-menu
 
+## 0.3.1
+
+### Patch Changes
+
+- fix: fixed flex alignment within the icon spans to ensure proper content position for emojis as well
+
 ## 0.3.0
 
 ### Minor Changes
