@@ -1,6 +1,6 @@
 {
   "name": "docsify-page-actions-menu",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A Docsify plugin for copying and exporting page markdown, LLM integrations, and more.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -41,6 +41,7 @@
     "docsify": ">=4"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.7",
     "@rollup/plugin-babel": "^6.1.0",
     "@rollup/plugin-terser": "^0.4.4",
     "rollup": "^4.52.5"

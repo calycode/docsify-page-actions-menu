@@ -26,45 +26,75 @@ The plugin is designed to work with [Docsify Theme variables](https://preview.do
 
 ```css
 :root {
+   --dapm-bg-alt: var(--color-mono-2, #f5f5f5);
+   --dapm-bg: var(--color-mono-1, #fff);
    --dapm-border-color: var(--border-color, #eee);
    --dapm-border-radius: var(--border-radius, 6px);
    --dapm-button-padding: var(--button-padding, 8px 16px);
-   --dapm-bg: var(--color-mono-1, #fff);
-   --dapm-bg-alt: var(--color-mono-2, #f5f5f5);
-   --dapm-text: var(--color-text, #222);
-   --dapm-icon-bg: var(--color-mono-min, #f9f9f9);
    --dapm-desc-color: var(--color-mono-max, #888);
-   --dapm-font-size: var(--font-size-s, 1rem);
-   --dapm-font-size-label: var(--font-size-l, 1.1rem);
    --dapm-font-size-desc: var(--font-size-xs, 0.9rem);
+   --dapm-font-size-label: var(--font-size-l, 1.1rem);
+   --dapm-font-size: var(--font-size-s, 1rem);
    --dapm-font-weight: var(--font-weight, 500);
-   --dapm-z-index: var(--z-sidebar-toggle, 20);
+   --dapm-icon-bg: var(--color-mono-min, #f9f9f9);
+   --dapm-icon-box-size: 26px;
    --dapm-spacing: var(--navbar-drop-link-spacing, 8px);
+   --dapm-text: var(--color-text, #222);
    --dapm-transition-duration: var(--duration-medium, 0.2s);
+   --dapm-z-index: var(--z-sidebar-toggle, 20);
 }
 ```
 
 ## Configuration
 
-Override or extend the default menu by adding a `pageActionItems` array in your Docsify config:
+Override or extend the behaviour of the plugin by adding a `pageActionItems` object to your Docsify config. Supported configuration:
+
+-  items (array of the menu items)
+-  button (the triggering button icon and label)
 
 ```js
 window.$docsify = {
    // ...other config,
-   pageActionItems: [
-      {
-         icon: '🔗', // HTML string, SVG, or <img>
-         label: 'Custom link',
-         desc: 'Description goes here',
-         action: 'custom', // or 'llm' | 'view' | 'copy'
-         llm: 'claude', // 'perplexity' | 'chatgpt' (if action is 'llm')
-         onClick: ({ rawMarkdown, blobUrl, vm }) => {
-            // Custom handler logic
-         },
+   pageActionItems: {
+      button: {
+         icon: '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.25 5.25H7.25C6.14543 5.25 5.25 6.14543 5.25 7.25V14.25C5.25 15.3546 6.14543 16.25 7.25 16.25H14.25C15.3546 16.25 16.25 15.3546 16.25 14.25V7.25C16.25 6.14543 15.3546 5.25 14.25 5.25Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M2.80103 11.998L1.77203 5.07397C1.61003 3.98097 2.36403 2.96397 3.45603 2.80197L10.38 1.77297C11.313 1.63397 12.19 2.16297 12.528 3.00097" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+         label: 'Copy page',
       },
+      items: [
+         {
+            icon: '🔗', // HTML string, SVG, or <img>
+            label: 'Custom link',
+            desc: 'Description goes here',
+            action: 'custom', // or 'llm' | 'view' | 'copy'
+            llm: 'claude', // 'perplexity' | 'chatgpt' (if action is 'llm')
+            onClick: ({ rawMarkdown, blobUrl, vm }) => {
+               // Custom handler logic
+               // Here you can also customize the behaviour of the default actions by defining your own
+               // such as showing a 'sweetalert2' toast message on successful action complete etc.
+            },
+         },
+         {
+            icon: '🗃️',
+            // you can customize the localisation for each text of each item as shown:
+            // same internationalization is available for the main button.
+            label: {
+               '/': 'Copy page',
+               '/en/': 'Copy Page',
+               '/zh-cn/': '复制页面'
+            },
+            desc: {
+               '/': 'Description goes here',
+               '/en/': 'Description goes here',
+               '/zh-cn/': '描述在这里'
+            },
+            action: 'copy'
+         }
+      ]
    ],
 };
 ```
+
+_Shoutout to the [docsify-pagination-plugin](https://github.com/imyelo/docsify-pagination/tree/master) for their tranlsation implementation, it gave a strong foundation for our implementation._
 
 <details>
 <summary> Default list of actions </summary>

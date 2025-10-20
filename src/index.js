@@ -68,11 +68,16 @@ function pageActionItems(hook, vm) {
       },
    ];
 
+   const defaultButton = {
+      icon: svgs.copy,
+      label: 'Page actions',
+   };
+
    // LLM target URLs
    const llmUrls = {
-      chatgpt: (url) =>
+      chatgpt: (md) =>
          `https://chatgpt.com/?hints=search&prompt=Read+from+${encodeURIComponent(
-            url
+            md
          )}+so+I+can+ask+questions+about+it.`,
       claude: (url) =>
          `https://claude.ai/new?q=Read%20from%20${encodeURIComponent(
@@ -86,7 +91,24 @@ function pageActionItems(hook, vm) {
 
    // Get effective menu items (user config or defaults)
    function getMenuItems() {
-      return Array.isArray(vm.config.pageActionItems) ? vm.config.pageActionItems : defaultItems;
+      const { pageActionItems } = vm.config;
+      if (
+         pageActionItems &&
+         typeof pageActionItems === 'object' &&
+         !Array.isArray(pageActionItems) &&
+         pageActionItems.items
+      ) {
+         return pageActionItems.items;
+      } else if (Array.isArray(pageActionItems)) {
+         return pageActionItems;
+      } else {
+         return defaultItems;
+      }
+   }
+
+   // Get the button config
+   function getButton() {
+      return { ...defaultButton, ...(vm.config.pageActionItems.button ?? {}) };
    }
 
    // Get current Docsify page URL
@@ -94,7 +116,31 @@ function pageActionItems(hook, vm) {
       const { origin, pathname } = window.location;
       let route = window.location.hash.replace(/^#\//, '').replace(/\.md$/, '') || 'README.md';
       if (!route.endsWith('.md')) route += '.md';
-      return origin + pathname.replace(/\/$/, '/') + route;
+
+      const cleanPathname = pathname.replace(/\/$/, '');
+      const cleanRoute = route.replace(/^\//, '');
+      return origin + cleanPathname + '/' + cleanRoute;
+   }
+
+   // Get localized text utility function (inpsired by the implementation in the docsify-pagination plugin)
+   function getLocalizedText(text, path) {
+      if (typeof text === 'string') return text;
+      if (typeof text === 'object' && text !== null) {
+         // Try to find the best match (longest matching prefix)
+         let matchedLocale = null;
+         let matchedLength = -1;
+         for (const locale in text) {
+            if (path && path.startsWith(locale) && locale.length > matchedLength) {
+               matchedLocale = locale;
+               matchedLength = locale.length;
+            }
+         }
+         if (matchedLocale) return text[matchedLocale];
+         // Fallback: try root ("/") or first available
+         if (text['/']) return text['/'];
+         return Object.values(text)[0];
+      }
+      return '';
    }
 
    // Inject CSS only once
@@ -104,21 +150,22 @@ function pageActionItems(hook, vm) {
       style.id = 'page-actions-menu-style';
       style.textContent = `
       :root {
+        --dapm-bg-alt: var(--color-mono-2, #f5f5f5);
+        --dapm-bg: var(--color-mono-1, #fff);
         --dapm-border-color: var(--border-color, #eee);
         --dapm-border-radius: var(--border-radius, 6px);
         --dapm-button-padding: var(--button-padding, 8px 16px);
-        --dapm-bg: var(--color-mono-1, #fff);
-        --dapm-bg-alt: var(--color-mono-2, #f5f5f5);
-        --dapm-text: var(--color-text, #222);
-        --dapm-icon-bg: var(--color-mono-min, #f9f9f9);
         --dapm-desc-color: var(--color-mono-max, #888);
-        --dapm-font-size: var(--font-size-s, 1rem);
-        --dapm-font-size-label: var(--font-size-l, 1.1rem);
         --dapm-font-size-desc: var(--font-size-xs, 0.9rem);
+        --dapm-font-size-label: var(--font-size-l, 1.1rem);
+        --dapm-font-size: var(--font-size-s, 1rem);
         --dapm-font-weight: var(--font-weight, 500);
-        --dapm-z-index: var(--z-sidebar-toggle, 20);
+        --dapm-icon-bg: var(--color-mono-min, #f9f9f9);
+        --dapm-icon-box-size: 26px;
         --dapm-spacing: var(--navbar-drop-link-spacing, 8px);
+        --dapm-text: var(--color-text, #222);
         --dapm-transition-duration: var(--duration-medium, 0.2s);
+        --dapm-z-index: var(--z-sidebar-toggle, 20);
       }
       #page-actions-menu-container {
         display: flex;
@@ -177,6 +224,9 @@ function pageActionItems(hook, vm) {
       .page-actions-menu-item:hover { background: var(--dapm-bg-alt); }
       .page-actions-menu-item-action-label { font-weight: calc(var(--dapm-font-weight) * 2); }
       .page-actions-menu-icon {
+        width: var(--dapm-icon-box-size);
+        height: var(--dapm-icon-box-size);
+        overflow: hidden;
         font-size: var(--dapm-font-size-label);
         flex-shrink: 0;
         display: flex;
@@ -196,15 +246,28 @@ function pageActionItems(hook, vm) {
    // Generate HTML for menu
    function generateMenuHtml() {
       const items = getMenuItems();
+      const button = getButton();
+
+      // Handle localization of the available texts:
+      const path = window.location.hash.replace(/^#/, '') || '/';
+      const buttonLabel = getLocalizedText(button.label, path);
+      const localizedItems = items.map((item) => {
+         return {
+            ...item,
+            label: getLocalizedText(item.label, path),
+            desc: getLocalizedText(item.desc, path),
+         };
+      });
+
       return `
       <div id="page-actions-menu-container">
         <div id="page-actions-menu-wrapper">
           <div type="button" id="page-actions-menu-btn">
-            <span class="page-actions-menu-icon">${svgs.copy}</span>
-            <span>Page actions</span>
+            <span class="page-actions-menu-icon">${button.icon}</span>
+            <span>${buttonLabel}</span>
           </div>
           <div id="page-actions-menu-dropdown">
-            ${items
+            ${localizedItems
                .map(
                   (item, idx) => `
               <div type="button" class="page-actions-menu-item" data-idx="${idx}">
@@ -244,7 +307,7 @@ function pageActionItems(hook, vm) {
             const item = items[idx];
             if (item.action === 'copy' && rawMarkdown) {
                navigator.clipboard.writeText(rawMarkdown);
-               btn.querySelector('span:nth-child(2)').textContent = 'Copied!';
+               btn.querySelector('span:nth-child(2)').textContent = '✅';
                setTimeout(
                   () => (btn.querySelector('span:nth-child(2)').textContent = 'Page actions'),
                   1200
@@ -252,7 +315,11 @@ function pageActionItems(hook, vm) {
             } else if (item.action === 'view' && blobUrl) {
                window.open(blobUrl, '_blank');
             } else if (item.action === 'llm') {
-               window.open(llmUrls[item.llm]?.(getCurrentPageUrl()), '_blank');
+               if (item.llm === 'chatgpt') {
+                  window.open(llmUrls[item.llm]?.(rawMarkdown), '_blank');
+               } else {
+                  window.open(llmUrls[item.llm]?.(getCurrentPageUrl()), '_blank');
+               }
             } else if (typeof item.onClick === 'function') {
                item.onClick({ rawMarkdown, blobUrl, vm });
             }
