@@ -1,5 +1,13 @@
 # docsify-page-actions-menu
 
+## 0.4.0
+
+### Minor Changes
+
+- fix: resetting wrong value on the trigger button label.
+  feat: add 'onSuccess' and 'onError' for the configuration items, to allow customized feedback after action
+  chore: updated docs to reflect the latest state
+
 ## 0.3.2
 
 ### Patch Changes
