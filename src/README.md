@@ -9,7 +9,7 @@ By default, the plugin provides:
 -  Open Claude with the current page context
 -  Open Perplexity with the current page context
 
-![default-light-mode](/assets/page-actions-light-default.png)
+![default-light-mode](../assets/page-actions-light-default.png)
 
 ## Installation
 

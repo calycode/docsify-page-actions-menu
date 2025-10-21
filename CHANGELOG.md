@@ -1,5 +1,11 @@
 # docsify-page-actions-menu
 
+## 0.5.0
+
+### Minor Changes
+
+- chore: adjust the elements to be keyboard-focusable
+
 ## 0.4.0
 
 ### Minor Changes

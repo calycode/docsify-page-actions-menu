@@ -250,6 +250,7 @@ function pageActionItems(hook, vm) {
       }
       .page-actions-menu-item:not(:last-child) { margin-bottom: var(--dapm-spacing); }
       .page-actions-menu-item:hover { background: var(--dapm-bg-alt); }
+      .page-actions-menu-item:focus { background: var(--dapm-bg-alt); }
       .page-actions-menu-item-action-label { font-weight: calc(var(--dapm-font-weight) * 2); }
       .page-actions-menu-icon {
         width: var(--dapm-icon-box-size);
@@ -292,21 +293,21 @@ function pageActionItems(hook, vm) {
       return `
       <div id="page-actions-menu-container">
         <div id="page-actions-menu-wrapper">
-          <div type="button" id="page-actions-menu-btn">
+          <button id="page-actions-menu-btn">
             <span class="page-actions-menu-icon">${button.icon}</span>
             <span>${buttonLabel}</span>
-          </div>
+          </button>
           <div id="page-actions-menu-dropdown">
             ${localizedItems
                .map(
                   (item, idx) => `
-              <div type="button" class="page-actions-menu-item" data-idx="${idx}">
+              <button tabindex="0" class="page-actions-menu-item" data-idx="${idx}">
                 <span class="page-actions-menu-icon">${item.icon}</span>
                 <div>
                   <div class="page-actions-menu-item-action-label">${item.label}</div>
                   <div class="page-actions-menu-desc">${item.desc}</div>
                 </div>
-              </div>
+              </button>
             `
                )
                .join('')}
