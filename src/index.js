@@ -136,7 +136,7 @@ function pageActionItems(hook, vm) {
 
    // Get the button config
    function getButton() {
-      return { ...defaultButton, ...(vm.config.pageActionItems.button ?? {}) };
+      return { ...defaultButton, ...(vm.config?.pageActionItems?.button ?? {}) };
    }
 
    // Get current Docsify page URL

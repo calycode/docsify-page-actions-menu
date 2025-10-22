@@ -1,5 +1,11 @@
 # docsify-page-actions-menu
 
+## 0.5.1
+
+### Patch Changes
+
+- fix: fixing undefined when config is not provided
+
 ## 0.5.0
 
 ### Minor Changes
