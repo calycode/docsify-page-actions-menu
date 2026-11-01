@@ -219,6 +219,23 @@ _Shoutout to the [docsify-pagination-plugin](https://github.com/imyelo/docsify-p
    pnpm build
    ```
 
+### Testing
+
+The plugin runs a Playwright regression suite against docsify 4.13.1 and 5.1.0, covering both `src/index.js` and `dist/index.umd.js`. Install the browser once, then run the suite:
+
+```sh
+pnpm exec playwright install chromium
+pnpm test
+```
+
+Other useful commands:
+
+- `pnpm test:visual` writes screenshots to `tests/artifacts/` and a side-by-side `index.html`.
+- `pnpm check:dist` fails when `dist/` is out of date with `src/`.
+- `pnpm serve` serves the test harness at `http://127.0.0.1:4173`.
+
+See [tests/README.md](https://github.com/calycode/docsify-page-actions-menu/blob/master/tests/README.md) for the version matrix and visual-check URLs.
+
 ---
 
 ## License
