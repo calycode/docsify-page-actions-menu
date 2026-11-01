@@ -18,7 +18,8 @@
   ],
   "scripts": {
     "build": "rollup -c",
-    "dev": "npx serve src"
+    "dev": "npx serve src",
+    "prepack": "npm run build"
   },
   "repository": {
     "type": "git",
