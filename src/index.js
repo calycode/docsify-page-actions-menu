@@ -119,7 +119,7 @@ function pageActionItems(hook, vm) {
 
    // Get effective menu items (user config or defaults)
    function getMenuItems() {
-      const { pageActionItems } = vm.config;
+      const pageActionItems = vm.config?.pageActionItems;
       if (
          pageActionItems &&
          typeof pageActionItems === 'object' &&
@@ -206,18 +206,26 @@ function pageActionItems(hook, vm) {
         display: flex;
         align-items: center;
         gap: 8px;
+        margin: 0;
         padding: 4px 12px;
         border-radius: var(--dapm-border-radius);
         border: 1px solid var(--dapm-border-color);
         background: var(--dapm-bg);
         color: var(--dapm-text);
         transition: background var(--dapm-transition-duration);
+        appearance: none;
+        font-family: inherit;
         font-weight: 500;
         font-size: 1rem;
+        text-align: inherit;
         box-shadow: 0 2px 4px var(--dapm-bg-alt);
         cursor: pointer;
       }
       #page-actions-menu-btn:hover { background: var(--dapm-bg-alt); }
+      #page-actions-menu-btn:focus-visible {
+        outline: 2px solid var(--dapm-text);
+        outline-offset: 1px;
+      }
       #page-actions-menu-dropdown {
         position: absolute;
         right: 0;
@@ -233,11 +241,12 @@ function pageActionItems(hook, vm) {
         font-size: var(--dapm-font-size);
         display: none;
       }
-      .page-actions-menu-item {
+      #page-actions-menu-container .page-actions-menu-item {
         display: flex;
         width: 100%;
         align-items: center;
         gap: var(--dapm-spacing);
+        margin: 0;
         padding: var(--dapm-button-padding);
         color: var(--dapm-text);
         text-align: left;
@@ -245,12 +254,21 @@ function pageActionItems(hook, vm) {
         border: none;
         outline: none;
         cursor: pointer;
+        appearance: none;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
         border-radius: var(--dapm-border-radius);
+        box-shadow: none;
         transition: background var(--dapm-transition-duration);
       }
-      .page-actions-menu-item:not(:last-child) { margin-bottom: var(--dapm-spacing); }
-      .page-actions-menu-item:hover { background: var(--dapm-bg-alt); }
-      .page-actions-menu-item:focus { background: var(--dapm-bg-alt); }
+      #page-actions-menu-container .page-actions-menu-item:not(:last-child) { margin-bottom: var(--dapm-spacing); }
+      #page-actions-menu-container .page-actions-menu-item:hover { background: var(--dapm-bg-alt); outline: none; }
+      #page-actions-menu-container .page-actions-menu-item:focus { background: var(--dapm-bg-alt); }
+      #page-actions-menu-container .page-actions-menu-item:focus-visible {
+        outline: 2px solid var(--dapm-text);
+        outline-offset: 1px;
+      }
       .page-actions-menu-item-action-label { font-weight: calc(var(--dapm-font-weight) * 2); }
       .page-actions-menu-icon {
         width: var(--dapm-icon-box-size);
@@ -293,7 +311,7 @@ function pageActionItems(hook, vm) {
       return `
       <div id="page-actions-menu-container">
         <div id="page-actions-menu-wrapper">
-          <button id="page-actions-menu-btn">
+          <button type="button" id="page-actions-menu-btn">
             <span class="page-actions-menu-icon">${button.icon}</span>
             <span>${buttonLabel}</span>
           </button>
@@ -301,7 +319,7 @@ function pageActionItems(hook, vm) {
             ${localizedItems
                .map(
                   (item, idx) => `
-              <button tabindex="0" class="page-actions-menu-item" data-idx="${idx}">
+              <button type="button" tabindex="0" class="page-actions-menu-item" data-idx="${idx}">
                 <span class="page-actions-menu-icon">${item.icon}</span>
                 <div>
                   <div class="page-actions-menu-item-action-label">${item.label}</div>
