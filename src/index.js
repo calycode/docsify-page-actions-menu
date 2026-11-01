@@ -171,6 +171,17 @@ function pageActionItems(hook, vm) {
       return '';
    }
 
+   // Docsify exposes its version on window.Docsify in both v4 and v5. We record
+   // it on the menu for CSS/debugging, but compatibility is handled by feature
+   // detection and variable fallbacks, so there is no version-specific branch.
+   function getDocsifyVersion() {
+      const version =
+         window.Docsify && typeof window.Docsify.version === 'string'
+            ? window.Docsify.version
+            : 'unknown';
+      return version.replace(/[^\w.-]/g, '') || 'unknown';
+   }
+
    // Inject CSS only once
    function injectStyles() {
       if (document.getElementById('page-actions-menu-style')) return;
@@ -296,6 +307,8 @@ function pageActionItems(hook, vm) {
    function generateMenuHtml() {
       const items = getMenuItems();
       const button = getButton();
+      const docsifyVersion = getDocsifyVersion();
+      const docsifyMajor = docsifyVersion.split('.')[0] || 'unknown';
 
       // Handle localization of the available texts:
       const path = window.location.hash.replace(/^#/, '') || '/';
@@ -309,7 +322,7 @@ function pageActionItems(hook, vm) {
       });
 
       return `
-      <div id="page-actions-menu-container">
+      <div id="page-actions-menu-container" data-docsify-version="${docsifyVersion}" data-docsify-major="${docsifyMajor}">
         <div id="page-actions-menu-wrapper">
           <button type="button" id="page-actions-menu-btn">
             <span class="page-actions-menu-icon">${button.icon}</span>
