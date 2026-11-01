@@ -1,5 +1,12 @@
 # docsify-page-actions-menu
 
+## 0.5.2
+
+### Patch Changes
+
+- 53a5364: Rebuild the distributed bundle from the current source so pages without a `pageActionItems` config no longer throw, restoring the keyboard-accessible markup without changing the menu's appearance. The build now also runs automatically on pack/publish to prevent stale `dist` files from shipping.
+- c998810: Add a Playwright regression suite covering docsify 4 and 5, document how to run it, and expose the detected docsify version on the menu container for CSS hooks and debugging.
+
 ## 0.5.1
 
 ### Patch Changes
